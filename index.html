@@ -326,7 +326,6 @@ function genPlane() {
       <div class="step">$$\\begin{vmatrix} x - (${x1}) & y - (${y1}) & z - (${z1}) \\\\ ${a1} & ${b1} & ${c1} \\\\ ${a2} & ${b2} & ${c2} \\end{vmatrix} = 0$$</div>
       <div class="step">Раскрываем определитель по правилу треугольников и приводим подобные:</div>
       <div class="step">$$${eq}$$</div>
-      <div class="step">Коэффициенты при $x$, $y$, $z$ дают вектор нормали.</div>
       <div class="answer">Ответ: $${eq}$, $\\vec{n}\\{${A};${B};${C}\\}$.</div>
     `
   };
@@ -348,7 +347,7 @@ function genDistPointPlane() {
       <div class="step">Из уравнения плоскости выписываем вектор нормали $\\vec{n}\\{${A};${B};${C}\\}$.</div>
       <div class="step">Подставляем координаты точки $M$ в левую часть уравнения плоскости:</div>
       <div class="step">$$${A} \\cdot ${x0} + ${B} \\cdot ${y0} + ${C} \\cdot ${z0} + (${D}) = ${A*x0 + B*y0 + C*z0 + D}$$</div>
-      <div class="step">Берём модуль этого числа: $|${A*x0 + B*y0 + C*z0 + D}| = ${num}$.</div>
+      <div class="step">Берём модуль: $|${A*x0 + B*y0 + C*z0 + D}| = ${num}$.</div>
       <div class="step">Считаем длину вектора нормали: $|\\vec{n}| = \\sqrt{${A*A} + ${B*B} + ${C*C}} = \\sqrt{${den2}} = ${sqrtSimplify(den2)}$.</div>
       <div class="step">По формуле $\\rho = \\dfrac{|Ax_0 + By_0 + Cz_0 + D|}{|\\vec{n}|}$:</div>
       <div class="step">$$\\rho = \\frac{${num}}{${sqrtSimplify(den2)}}$$</div>
@@ -524,29 +523,25 @@ const sections = [
     title: "✏️ Экзаменационные задачи №14",
     theory: `
       <p>Задачи с доказательством (пункт а) и вычислением (пункт б). Числа фиксированы, так как привязаны к чертежу.</p>
-      <p><b>Как заменить картинки на свои:</b> загрузите файлы с картинками в корень этого репозитория (рядом с index.html) и укажите их имена в поле <code>img</code> каждой задачи. Подробности — в сообщении.</p>
     `,
     tasks: [
       {
         title: "✏️ Задача 1. Правильная треугольная пирамида",
-        body: "Основание правильной треугольной пирамиды $МАВС$ — треугольник $АВС$ со стороной 6. Ребро $МА$ перпендикулярно грани $МВС$. Через вершину $М$ и середины рёбер $АС$ и $ВС$ проведена плоскость $\\alpha$.<br>а) Докажите, что сечение пирамиды плоскостью $\\alpha$ — равносторонний треугольник.<br>б) Найдите расстояние от вершины $С$ до плоскости $\\alpha$.",
+        body: "Основание правильной треугольной пирамиды $МАВС$ — треугольник $АВС$ со стороной 6. Ребро $МА$ перпендикулярно грани $МВС$. Через вершину $М$ и середины рёбер $АС$ и $АВ$ проведена плоскость $\\alpha$.<br>а) Докажите, что сечение пирамиды плоскостью $\\alpha$ — равносторонний треугольник.<br>б) Найдите расстояние от вершины $С$ до плоскости $\\alpha$.",
         img: "pyramid.png",
         solution: `
           <div class="step"><b>Пункт а). Введение системы координат.</b> Поместим начало координат в точку $A(0;0;0)$, ось $Ox$ направим вдоль $AB$, ось $Oy$ — перпендикулярно $AB$ в плоскости основания, ось $Oz$ — вертикально вверх.</div>
           <div class="step">Тогда: $B(6;0;0)$. Точка $C$ находится на расстоянии $AC = 6$ под углом $60°$ к $AB$: $C(6\\cos 60°;\\ 6\\sin 60°;\\ 0) = C(3;\\ 3\\sqrt{3};\\ 0)$.</div>
           <div class="step">Центр правильного треугольника $ABC$ — точка пересечения медиан: $O\\left(\\dfrac{0+6+3}{3};\\ \\dfrac{0+0+3\\sqrt{3}}{3};\\ 0\\right) = O(3;\\ \\sqrt{3};\\ 0)$.</div>
           <div class="step">По условию $MA \\perp MBC$, значит $MA$ параллельна нормали к плоскости $MBC$. В правильной пирамиде высота $MO$ перпендикулярна основанию, а $A$ лежит в основании, поэтому $MA$ проходит через точку, симметричную $A$ относительно $O$. Ищем $M$ на вертикали над $O$: $M(3;\\ \\sqrt{3};\\ h)$.</div>
-          <div class="step">Из условия $MA \\perp MB$ и $MA \\perp MC$ (раз $MA \\perp$ плоскости $MBC$) получаем $MA = MB = MC$. Из $MA = MB$:</div>
-          <div class="step">$MA^2 = (3-0)^2 + (\\sqrt{3}-0)^2 + h^2 = 9 + 3 + h^2 = 12 + h^2$.</div>
-          <div class="step">$MB^2 = (3-6)^2 + (\\sqrt{3}-0)^2 + h^2 = 9 + 3 + h^2 = 12 + h^2$.</div>
-          <div class="step">Равенство выполняется автоматически. Используем $MA \\perp MB$: $(M-A) \\cdot (M-B) = 0$.</div>
+          <div class="step">Из условия $MA \\perp MB$ получаем $(M-A) \\cdot (M-B) = 0$:</div>
           <div class="step">$(3;\\sqrt{3};h) \\cdot (-3;\\sqrt{3};h) = -9 + 3 + h^2 = 0 \\Rightarrow h^2 = 6 \\Rightarrow h = \\sqrt{6}$.</div>
           <div class="step">Итак, $M(3;\\ \\sqrt{3};\\ \\sqrt{6})$.</div>
           <div class="step"><b>Находим K и L.</b> $K$ — середина $AC$: $K\\left(\\dfrac{0+3}{2};\\ \\dfrac{0+3\\sqrt{3}}{2};\\ 0\\right) = K(1{,}5;\\ 1{,}5\\sqrt{3};\\ 0)$.</div>
-          <div class="step">$L$ — середина $BC$: $L\\left(\\dfrac{6+3}{2};\\ \\dfrac{0+3\\sqrt{3}}{2};\\ 0\\right) = L(4{,}5;\\ 1{,}5\\sqrt{3};\\ 0)$.</div>
-          <div class="note">В условии задачи сказано, что $L$ — середина $BC$, а в вашем документе $L$ был серединой $AB$ (координаты $L(3;0;0)$). Возьмём оба варианта: если $L$ — середина $AB$, то $L(3;0;0)$, тогда $|ML| = \\sqrt{0 + 3 + 6} = 3$. Если $L$ — середина $BC$, то $L(4{,}5;\\ 1{,}5\\sqrt{3};\\ 0)$, $|ML| = \\sqrt{(3-4{,}5)^2 + (\\sqrt{3}-1{,}5\\sqrt{3})^2 + 6} = \\sqrt{2{,}25 + 0{,}75 + 6} = 3$. В обоих случаях $|ML| = 3$. Так что доказательство сохраняется.</div>
+          <div class="step">$L$ — середина $AB$: $L\\left(\\dfrac{0+6}{2};\\ \\dfrac{0+0}{2};\\ 0\\right) = L(3;\\ 0;\\ 0)$.</div>
+          <div class="step">Считаем $|ML| = \\sqrt{(3-3)^2 + (\\sqrt{3}-0)^2 + (\\sqrt{6}-0)^2} = \\sqrt{0 + 3 + 6} = \\sqrt{9} = 3$.</div>
           <div class="step">Считаем $|MK| = \\sqrt{(3-1{,}5)^2 + (\\sqrt{3}-1{,}5\\sqrt{3})^2 + (\\sqrt{6})^2} = \\sqrt{2{,}25 + 0{,}75 + 6} = \\sqrt{9} = 3$.</div>
-          <div class="step">Считаем $|KL| = \\sqrt{(3-1{,}5)^2 + (0-1{,}5\\sqrt{3})^2 + 0} = \\sqrt{2{,}25 + 6{,}75} = \\sqrt{9} = 3$ (для $L(3;0;0)$).</div>
+          <div class="step">Считаем $|KL| = \\sqrt{(3-1{,}5)^2 + (0-1{,}5\\sqrt{3})^2 + 0} = \\sqrt{2{,}25 + 6{,}75} = \\sqrt{9} = 3$.</div>
           <div class="step">Все три стороны равны 3 $\\Rightarrow$ треугольник $MKL$ равносторонний. Что и требовалось доказать.</div>
           <div class="step"><b>Пункт б). Составляем уравнение плоскости α = (MKL).</b> Возьмём $M(3;\\sqrt{3};\\sqrt{6})$, $K(1{,}5;1{,}5\\sqrt{3};0)$, $L(3;0;0)$.</div>
           <div class="step">Векторы: $\\overrightarrow{ML} = (0;-\\sqrt{3};-\\sqrt{6})$, $\\overrightarrow{MK} = (-1{,}5;0{,}5\\sqrt{3};-\\sqrt{6})$.</div>
@@ -575,20 +570,18 @@ const sections = [
           <div class="step"><b>Плоскость AD₁C.</b> Три точки: $A(a;0;0)$, $D_1(a;a;b)$, $C(0;a;0)$.</div>
           <div class="step">Векторы: $\\overrightarrow{AD_1} = (0;a;b)$, $\\overrightarrow{AC} = (-a;a;0)$.</div>
           <div class="step">Нормаль $\\vec{n_1} = \\overrightarrow{AD_1} \\times \\overrightarrow{AC}$:</div>
-          <div class="step">$\\vec{n_1} = \\begin{vmatrix} i & j & k \\\\ 0 & a & b \\\\ -a & a & 0 \\end{vmatrix} = i(a \\cdot 0 - b \\cdot a) - j(0 \\cdot 0 - b \\cdot (-a)) + k(0 \\cdot a - a \\cdot (-a))$</div>
-          <div class="step">$= i(-ab) - j(ab) + k(a^2) = \\{-ab;\\ -ab;\\ a^2\\}$.</div>
+          <div class="step">$\\vec{n_1} = \\begin{vmatrix} i & j & k \\\\ 0 & a & b \\\\ -a & a & 0 \\end{vmatrix} = i(a \\cdot 0 - b \\cdot a) - j(0 \\cdot 0 - b \\cdot (-a)) + k(0 \\cdot a - a \\cdot (-a)) = \\{-ab;\\ -ab;\\ a^2\\}$.</div>
           <div class="step"><b>Плоскость BB₁D₁.</b> Точки: $B(0;0;0)$, $B_1(0;0;b)$, $D_1(a;a;b)$.</div>
           <div class="step">Векторы: $\\overrightarrow{BB_1} = (0;0;b)$, $\\overrightarrow{BD_1} = (a;a;b)$.</div>
-          <div class="step">Нормаль $\\vec{n_2} = \\overrightarrow{BB_1} \\times \\overrightarrow{BD_1}$:</div>
-          <div class="step">$\\vec{n_2} = \\begin{vmatrix} i & j & k \\\\ 0 & 0 & b \\\\ a & a & b \\end{vmatrix} = i(0 \\cdot b - b \\cdot a) - j(0 \\cdot b - b \\cdot a) + k(0 \\cdot a - 0 \\cdot a) = \\{-ab;\\ ab;\\ 0\\}$.</div>
+          <div class="step">Нормаль $\\vec{n_2} = \\overrightarrow{BB_1} \\times \\overrightarrow{BD_1} = \\{-ab;\\ ab;\\ 0\\}$.</div>
           <div class="step"><b>Скалярное произведение нормалей:</b></div>
           <div class="step">$\\vec{n_1} \\cdot \\vec{n_2} = (-ab)(-ab) + (-ab)(ab) + a^2 \\cdot 0 = a^2b^2 - a^2b^2 + 0 = 0$.</div>
-          <div class="step">Так как скалярное произведение равно нулю, векторы нормалей перпендикулярны $\\Rightarrow$ плоскости перпендикулярны. Что и требовалось доказать.</div>
+          <div class="step">Скалярное произведение равно нулю $\\Rightarrow$ плоскости перпендикулярны. Что и требовалось доказать.</div>
           <div class="step"><b>Пункт б). Подставляем числа.</b> $AB = 5$, $AA_1 = 6$, то есть $a = 5$, $b = 6$.</div>
           <div class="step">Координаты: $A(5;0;0)$, $D_1(5;5;6)$, $C(0;5;0)$, $B_1(0;0;6)$.</div>
           <div class="step">Из пункта а) нормаль к плоскости $AD_1C$: $\\vec{n_1}\\{-ab;-ab;a^2\\} = \\{-30;-30;25\\}$. Сократим на 5: $\\vec{n}\\{-6;-6;5\\}$.</div>
           <div class="step">Уравнение плоскости $AD_1C$ через точку $A(5;0;0)$: $-6(x-5) - 6(y-0) + 5(z-0) = 0 \\Rightarrow -6x - 6y + 5z + 30 = 0$.</div>
-          <div class="step">Умножим на $-1$ для удобства: $6x + 6y - 5z - 30 = 0$. Нормаль $\\vec{n}\\{6;6;-5\\}$.</div>
+          <div class="step">Умножим на $-1$: $6x + 6y - 5z - 30 = 0$. Нормаль $\\vec{n}\\{6;6;-5\\}$.</div>
           <div class="step"><b>Расстояние от B₁ до плоскости.</b> $B_1(0;0;6)$.</div>
           <div class="step">Подставляем: $|6 \\cdot 0 + 6 \\cdot 0 - 5 \\cdot 6 - 30| = |-30 - 30| = 60$.</div>
           <div class="step">$|\\vec{n}| = \\sqrt{36 + 36 + 25} = \\sqrt{97}$.</div>
@@ -603,19 +596,18 @@ const sections = [
         solution: `
           <div class="step"><b>Система координат.</b> Поместим $A(0;0;0)$, $AB$ вдоль $Ox$, $AC$ — в плоскости $Oxy$. Пусть ребро тетраэдра равно $a$.</div>
           <div class="step">Тогда: $B(a;0;0)$, $C\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{2};\\ 0\\right)$.</div>
-          <div class="step">Вершина $D$ проецируется в центр треугольника $ABC$. Центр: $O\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{6};\\ 0\\right)$. Высота тетраэдра $h = \\sqrt{a^2 - \\left(\\dfrac{a}{\\sqrt{3}}\\right)^2} = a\\sqrt{\\dfrac{2}{3}} = \\dfrac{a\\sqrt{6}}{3}$.</div>
+          <div class="step">Вершина $D$ проецируется в центр треугольника $ABC$. Центр: $O\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{6};\\ 0\\right)$. Высота тетраэдра $h = \\sqrt{a^2 - \\left(\\dfrac{a}{\\sqrt{3}}\\right)^2} = \\dfrac{a\\sqrt{6}}{3}$.</div>
           <div class="step">Значит $D\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{6};\\ \\dfrac{a\\sqrt{6}}{3}\\right)$. Точка $H = O\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{6};\\ 0\\right)$.</div>
           <div class="step"><b>Точки K и M.</b></div>
-          <div class="step">$K$ — середина $CH$: $C\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{2};\\ 0\\right)$, $H\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{6};\\ 0\\right)$. Тогда $K\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{2}+\\dfrac{a\\sqrt{3}}{6} \\over 2;\\ 0\\right) = K\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{3};\\ 0\\right)$.</div>
-          <div class="step">$M$ — середина $CD$ (так как $BM$ — медиана грани $BCD$): $C\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{2};\\ 0\\right)$, $D\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{6};\\ \\dfrac{a\\sqrt{6}}{3}\\right)$.</div>
-          <div class="step">$M\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{2}+\\dfrac{a\\sqrt{3}}{6} \\over 2;\\ \\dfrac{a\\sqrt{6}}{6}\\right) = M\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{3};\\ \\dfrac{a\\sqrt{6}}{6}\\right)$.</div>
+          <div class="step">$K$ — середина $CH$: $C\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{2};\\ 0\\right)$, $H\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{6};\\ 0\\right)$. Тогда $K\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{3};\\ 0\\right)$.</div>
+          <div class="step">$M$ — середина $CD$ (так как $BM$ — медиана грани $BCD$): $M\\left(\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{3};\\ \\dfrac{a\\sqrt{6}}{6}\\right)$.</div>
           <div class="step"><b>Векторы для угла между DH и BM.</b></div>
-          <div class="step">$\\overrightarrow{DH} = H - D = \\left(0;\\ 0;\\ -\\dfrac{a\\sqrt{6}}{3}\\right)$.</div>
-          <div class="step">$\\overrightarrow{BM} = M - B = \\left(\\dfrac{a}{2}-a;\\ \\dfrac{a\\sqrt{3}}{3}-0;\\ \\dfrac{a\\sqrt{6}}{6}-0\\right) = \\left(-\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{3};\\ \\dfrac{a\\sqrt{6}}{6}\\right)$.</div>
-          <div class="step">Скалярное произведение: $0 \\cdot \\left(-\\dfrac{a}{2}\\right) + 0 \\cdot \\dfrac{a\\sqrt{3}}{3} + \\left(-\\dfrac{a\\sqrt{6}}{3}\\right) \\cdot \\dfrac{a\\sqrt{6}}{6} = -\\dfrac{a^2 \\cdot 6}{18} = -\\dfrac{a^2}{3}$.</div>
+          <div class="step">$\\overrightarrow{DH} = \\left(0;\\ 0;\\ -\\dfrac{a\\sqrt{6}}{3}\\right)$.</div>
+          <div class="step">$\\overrightarrow{BM} = \\left(-\\dfrac{a}{2};\\ \\dfrac{a\\sqrt{3}}{3};\\ \\dfrac{a\\sqrt{6}}{6}\\right)$.</div>
+          <div class="step">Скалярное произведение: $0 + 0 + \\left(-\\dfrac{a\\sqrt{6}}{3}\\right) \\cdot \\dfrac{a\\sqrt{6}}{6} = -\\dfrac{a^2 \\cdot 6}{18} = -\\dfrac{a^2}{3}$.</div>
           <div class="step">Модуль: $\\dfrac{a^2}{3}$.</div>
-          <div class="step">$|\\overrightarrow{DH}| = \\dfrac{a\\sqrt{6}}{3}$. &nbsp; $|\\overrightarrow{BM}| = \\sqrt{\\dfrac{a^2}{4} + \\dfrac{a^2}{3} + \\dfrac{a^2}{6}} = a\\sqrt{\\dfrac{3+4+2}{12}} = a\\sqrt{\\dfrac{9}{12}} = \\dfrac{a\\sqrt{3}}{2}$.</div>
-          <div class="step">$\\cos\\alpha = \\dfrac{a^2/3}{(a\\sqrt{6}/3) \\cdot (a\\sqrt{3}/2)} = \\dfrac{a^2/3}{a^2 \\sqrt{18}/6} = \\dfrac{a^2/3}{a^2 \\cdot 3\\sqrt{2}/6} = \\dfrac{a^2/3}{a^2\\sqrt{2}/2} = \\dfrac{2}{3\\sqrt{2}} = \\dfrac{\\sqrt{2}}{3}$.</div>
+          <div class="step">$|\\overrightarrow{DH}| = \\dfrac{a\\sqrt{6}}{3}$. &nbsp; $|\\overrightarrow{BM}| = \\sqrt{\\dfrac{a^2}{4} + \\dfrac{a^2}{3} + \\dfrac{a^2}{6}} = \\dfrac{a\\sqrt{3}}{2}$.</div>
+          <div class="step">$\\cos\\alpha = \\dfrac{a^2/3}{(a\\sqrt{6}/3) \\cdot (a\\sqrt{3}/2)} = \\dfrac{2}{3\\sqrt{2}} = \\dfrac{\\sqrt{2}}{3}$.</div>
           <div class="answer">Ответ: б) $\\alpha = \\arccos\\dfrac{\\sqrt{2}}{3}$.</div>
         `
       },
@@ -631,7 +623,7 @@ const sections = [
           <div class="step">$\\cos\\angle(BE;AD) = \\dfrac{|0 \\cdot 0 + a \\cdot a + (a/2) \\cdot 0|}{|\\overrightarrow{BE}| \\cdot |\\overrightarrow{AD}|} = \\dfrac{a^2}{\\dfrac{a\\sqrt{5}}{2} \\cdot a} = \\dfrac{2}{\\sqrt{5}}$.</div>
           <div class="step">Угол $CBE$ — это угол между векторами $\\overrightarrow{BC}$ и $\\overrightarrow{BE}$.</div>
           <div class="step">$\\overrightarrow{BC} = (0;a;0)$, $\\overrightarrow{BE} = (0;a;a/2)$.</div>
-          <div class="step">$\\cos\\angle CBE = \\dfrac{|0+ a \\cdot a + 0|}{a \\cdot \\dfrac{a\\sqrt{5}}{2}} = \\dfrac{a^2}{\\dfrac{a^2\\sqrt{5}}{2}} = \\dfrac{2}{\\sqrt{5}}$.</div>
+          <div class="step">$\\cos\\angle CBE = \\dfrac{|0+ a \\cdot a + 0|}{a \\cdot \\dfrac{a\\sqrt{5}}{2}} = \\dfrac{2}{\\sqrt{5}}$.</div>
           <div class="step">Косинусы равны, значит углы равны. Что и требовалось доказать.</div>
           <div class="step"><b>Пункт б).</b> $\\cos\\alpha = \\dfrac{2}{\\sqrt{5}} = \\dfrac{2\\sqrt{5}}{5}$.</div>
           <div class="answer">Ответ: б) $\\alpha = \\arccos\\dfrac{2\\sqrt{5}}{5}$.</div>
@@ -652,10 +644,9 @@ const sections = [
           <div class="step">$BC^2 = (3-3)^2 + (4-(-4))^2 + 0 = 64$.</div>
           <div class="step">Наибольшая сторона $BC = 8$. Проверим: $BC^2 = 64 < A_1B^2 + A_1C^2 = 34 + 34 = 68$.</div>
           <div class="step">Если квадрат наибольшей стороны меньше суммы квадратов двух других сторон, треугольник остроугольный. Что и требовалось доказать.</div>
-          <div class="step"><b>Пункт б).</b> Направляющий вектор прямой $A_1B$: $\\overrightarrow{A_1B} = (3-0;\\ -4-0;\\ 0-3) = (3;-4;-3)$.</div>
+          <div class="step"><b>Пункт б).</b> Направляющий вектор прямой $A_1B$: $\\overrightarrow{A_1B} = (3;-4;-3)$.</div>
           <div class="step">Плоскость $BCC_1$ проходит через точки $B(3;-4;0)$, $C(3;4;0)$, $C_1(3;4;3)$.</div>
-          <div class="step">Эта плоскость параллельна оси $Oy$ и оси $Oz$ (векторы $BC$ и $CC_1$ лежат в ней), а нормаль к ней параллельна оси $Ox$: $\\vec{n}\\{1;0;0\\}$.</div>
-          <div class="step">Проверим: подставим $B$ в уравнение $x = 3$: $3 = 3$ ✓. Все три точки имеют $x = 3$, значит плоскость задаётся уравнением $x - 3 = 0$, $\\vec{n}\\{1;0;0\\}$.</div>
+          <div class="step">Все три точки имеют $x = 3$, значит плоскость задаётся уравнением $x - 3 = 0$, $\\vec{n}\\{1;0;0\\}$.</div>
           <div class="step">По формуле $\\sin\\alpha = \\dfrac{|\\vec{c} \\cdot \\vec{n}|}{|\\vec{c}| \\cdot |\\vec{n}|}$:</div>
           <div class="step">$\\vec{c} \\cdot \\vec{n} = 3 \\cdot 1 + (-4) \\cdot 0 + (-3) \\cdot 0 = 3$.</div>
           <div class="step">$|\\vec{c}| = \\sqrt{9 + 16 + 9} = \\sqrt{34}$, &nbsp; $|\\vec{n}| = 1$.</div>
