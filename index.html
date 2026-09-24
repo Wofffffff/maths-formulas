@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Задание №14 ЕГЭ для дарины · Метод координат</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #eef2ff;
+    min-height: 100vh;
+    padding: 24px 16px;
+    position: relative;
+    overflow-x: hidden;
+    background: #0b1020;
+  }
+
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(135deg, rgba(10,15,35,.88), rgba(30,20,60,.78)),
+      url("https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1920&q=80");
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(74,108,247,.35), transparent 45%),
+                radial-gradient(circle at 80% 70%, rgba(168,85,247,.35), transparent 45%),
+                radial-gradient(circle at 50% 100%, rgba(34,211,238,.25), transparent 50%);
+    animation: floatGradient 18s ease-in-out infinite alternate;
+    z-index: -1;
+    pointer-events: none;
+  }
+  @keyframes floatGradient {
+    0%   { transform: translate3d(0,0,0) scale(1); }
+    100% { transform: translate3d(2%, -2%, 0) scale(1.1); }
+  }
+
+  .container { max-width: 900px; margin: 0 auto; position: relative; }
+
+  h1 {
+    font-size: 30px; text-align: center; margin-bottom: 6px;
+    background: linear-gradient(90deg, #a5b4fc, #f0abfc, #67e8f9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .subtitle { text-align: center; color: #c7d2fe; opacity: .8; margin-bottom: 24px; font-size: 15px; }
+
+  .topbar { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+  .topbar input {
+    flex: 1; min-width: 180px; padding: 13px 18px; font-size: 16px;
+    color: #eef2ff;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 14px; outline: none;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .topbar input::placeholder { color: #c7d2fe; opacity: .6; }
+  .topbar input:focus { border-color: #a5b4fc; background: rgba(255,255,255,.13); }
+
+  .menu { display: grid; gap: 14px; }
+  .menu button {
+    padding: 20px 22px; font-size: 17px; cursor: pointer;
+    color: #eef2ff; text-align: left;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 18px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: .25s; position: relative; overflow: hidden;
+  }
+  .menu button::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.12), transparent);
+    transform: translateX(-100%); transition: transform .6s;
+  }
+  .menu button:hover::before { transform: translateX(100%); }
+  .menu button:hover {
+    background: rgba(255,255,255,.13);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    border-color: rgba(165,180,252,.5);
+  }
+  .menu .count {
+    color: #c7d2fe; opacity: .7; font-size: 14px;
+    background: rgba(255,255,255,.08);
+    padding: 4px 12px; border-radius: 999px;
+  }
+
+  .section-header {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+    animation: fadeSlide .35s ease both;
+  }
+  .section-header h2 { font-size: 22px; }
+  .back-btn {
+    padding: 9px 16px; font-size: 15px; cursor: pointer;
+    color: #eef2ff;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    transition: .2s;
+  }
+  .back-btn:hover { background: rgba(255,255,255,.16); }
+
+  /* Теория */
+  .theory {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.14);
+    border-left: 4px solid #a5b4fc;
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-bottom: 22px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    animation: fadeSlide .4s ease both;
+  }
+  .theory h3 { font-size: 17px; margin-bottom: 12px; color: #c7d2fe; }
+  .theory p { margin-bottom: 10px; font-size: 15px; color: #dbe2ff; }
+  .theory ol { padding-left: 22px; font-size: 15px; color: #dbe2ff; }
+  .theory li { margin-bottom: 6px; }
+  .formula-block {
+    text-align: center; padding: 14px 0; font-size: 20px;
+    background: rgba(255,255,255,.05);
+    border-radius: 10px;
+    margin: 12px 0;
+  }
+
+  /* Задачи */
+  .task {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 20px;
+    padding: 22px;
+    margin-bottom: 18px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 10px 40px rgba(0,0,0,.3);
+    animation: fadeSlide .4s ease both;
+    transition: .25s;
+  }
+  .task:hover { border-color: rgba(165,180,252,.45); }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .task-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; color: #e0e7ff; }
+  .task-body { font-size: 16px; color: #dbe2ff; line-height: 1.7; margin-bottom: 14px; }
+  .task-body b { color: #fff; }
+
+  .btn-solution {
+    padding: 10px 18px; font-size: 15px; cursor: pointer;
+    color: #eef2ff;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    transition: .2s;
+  }
+  .btn-solution:hover { background: rgba(255,255,255,.16); }
+
+  .solution {
+    margin-top: 16px; padding: 16px 18px;
+    background: rgba(255,255,255,.05);
+    border-left: 4px solid #a5b4fc;
+    border-radius: 10px;
+    font-size: 15px; line-height: 1.8;
+    color: #e0e7ff;
+    display: none;
+  }
+  .solution.show { display: block; animation: fadeSlide .3s ease both; }
+  .solution .step { margin-bottom: 8px; }
+  .solution .answer {
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,.15);
+    font-weight: 600; color: #a5b4fc;
+  }
+
+  .empty { text-align: center; color: #c7d2fe; opacity: .6; padding: 60px 0; font-size: 16px; }
+
+  .katex { color: #fff; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📐 Задание №14 ЕГЭ</h1>
+  <p class="subtitle">Метод координат · теория и задачи</p>
+
+  <div class="topbar">
+    <input type="text" id="search" placeholder="🔍 Поиск по названию или теме...">
+  </div>
+
+  <div id="app"></div>
+</div>
+
+<script>
+/* =========================================================
+   ДАННЫЕ
+   ========================================================= */
+const sections = [
+  {
+    id: "intro",
+    title: "📖 Введение. Метод координат",
+    theory: `
+      <p><b>Метод координат</b> — способ решения геометрических задач, при котором вводят удобную систему координат и записывают все данные с её помощью.</p>
+      <p><b>Алгоритм:</b></p>
+      <ol>
+        <li>Выбираем систему координат в пространстве.</li>
+        <li>Находим координаты нужных точек.</li>
+        <li>Решаем задачу через формулы (уравнения прямых, плоскостей, расстояния, углы).</li>
+        <li>Переходим от аналитических соотношений к геометрическим.</li>
+      </ol>
+      <p><b>Темы задания №14:</b> круглые тела, углы, сечения пирамид и призм, расстояния.</p>
+    `,
+    tasks: []
+  },
+  {
+    id: "line",
+    title: "📏 Уравнение прямой по двум точкам",
+    theory: `
+      <p>Если известны точки $M_1(x_1;y_1;z_1)$ и $M_2(x_2;y_2;z_2)$, каноническое уравнение прямой:</p>
+      <div class="formula-block">$$\\frac{x - x_1}{x_2 - x_1} = \\frac{y - y_1}{y_2 - y_1} = \\frac{z - z_1}{z_2 - z_1}$$</div>
+      <p>В знаменателе — координаты направляющего вектора $\\overrightarrow{M_1M_2}(x_2-x_1;\\ y_2-y_1;\\ z_2-z_1)$.</p>
+    `,
+    tasks: [
+      {
+        title: "Задача 1",
+        body: "Составьте каноническое уравнение прямой, проходящей через точки $M_1(2;5;-3)$ и $M_2(6;3;-1)$.",
+        solution: `
+          <div class="step">Подставим координаты в формулу:</div>
+          <div class="step">$$\\frac{x - 2}{6 - 2} = \\frac{y - 5}{3 - 5} = \\frac{z - (-3)}{-1 - (-3)}$$</div>
+          <div class="step">Получаем:</div>
+          <div class="step">$$\\frac{x - 2}{4} = \\frac{y - 5}{-2} = \\frac{z + 3}{2}$$</div>
+          <div class="answer">Ответ: $\\dfrac{x - 2}{4} = \\dfrac{y - 5}{-2} = \\dfrac{z + 3}{2}$, направляющий вектор $\\vec{m}\\{4;-2;2\\}$.</div>
+        `
+      },
+      {
+        title: "Задача 2",
+        body: "Составьте уравнение прямой, проходящей через точки $M_1(1;0;-1)$ и $M_2(0;2;-4)$.",
+        solution: `
+          <div class="step">$$\\frac{x - 1}{0 - 1} = \\frac{y - 0}{2 - 0} = \\frac{z - (-1)}{-4 - (-1)}$$</div>
+          <div class="step">Получаем:</div>
+          <div class="step">$$\\frac{x - 1}{-1} = \\frac{y}{2} = \\frac{z + 1}{-3}$$</div>
+          <div class="answer">Ответ: $\\dfrac{x - 1}{-1} = \\dfrac{y}{2} = \\dfrac{z + 1}{-3}$, направляющий вектор $\\vec{m}\\{-1;2;-3\\}$.</div>
+        `
+      }
+    ]
+  },
+  {
+    id: "dist-point-line",
+    title: "📍 Расстояние от точки до прямой",
+    theory: `
+      <p>Расстояние от точки $M_1$ до прямой, проходящей через $M_0$ с направляющим вектором $\\vec{s}$:</p>
+      <div class="formula-block">$$d = \\frac{|\\overrightarrow{M_0M_1} \\times \\vec{s}|}{|\\vec{s}|}$$</div>
+      <p>Векторное произведение вычисляется через определитель третьего порядка.</p>
+    `,
+    tasks: [
+      {
+        title: "Задача 1",
+        body: "Найдите расстояние между точкой $M_1(0;2;3)$ и прямой $AB$, заданной уравнением $\\dfrac{x-3}{2} = \\dfrac{y-1}{1} = \\dfrac{z+1}{2}$.",
+        solution: `
+          <div class="step">1) Направляющий вектор $\\vec{s}\\{2;1;2\\}$, точка на прямой $M_0(3;1;-1)$.</div>
+          <div class="step">2) $\\overrightarrow{M_0M_1} = \\{3-0;\\ 1-2;\\ -1-3\\} = \\{3;-1;-4\\}$.</div>
+          <div class="step">3) Векторное произведение:</div>
+          <div class="step">$$\\vec{c} = \\begin{vmatrix} i & j & k \\\\ 3 & -1 & -4 \\\\ 2 & 1 & 2 \\end{vmatrix} = 2i - 14j + 5k$$</div>
+          <div class="step">4) $|\\vec{c}| = \\sqrt{2^2 + (-14)^2 + 5^2} = \\sqrt{225} = 15$.</div>
+          <div class="step">5) $|\\vec{s}| = \\sqrt{2^2 + 1^2 + 2^2} = \\sqrt{9} = 3$.</div>
+          <div class="step">6) $d = \\dfrac{15}{3} = 5$.</div>
+          <div class="answer">Ответ: 5.</div>
+        `
+      }
+    ]
+  },
+  {
+    id: "plane-3points",
+    title: "🧊 Уравнение плоскости по трём точкам",
+    theory: `
+      <p>Через три точки $M_1, M_2, M_3$, не лежащие на одной прямой, проходит единственная плоскость. Уравнение:</p>
+      <div class="formula-block">$$\\begin{vmatrix} x - x_1 & y - y_1 & z - z_1 \\\\ x_2 - x_1 & y_2 - y_1 & z_2 - z_1 \\\\ x_3 - x_1 & y_3 - y_1 & z_3 - z_1 \\end{vmatrix} = 0$$</div>
+      <p>Общий вид: $Ax + By + Cz + D = 0$. Вектор нормали $\\vec{n}\\{A;B;C\\}$.</p>
+    `,
+    tasks: [
+      {
+        title: "Задача 1",
+        body: "Составьте уравнение плоскости, проходящей через точки $A(3;-1;2)$, $B(4;-1;-1)$, $C(2;0;2)$.",
+        solution: `
+          <div class="step">Подставим координаты в определитель:</div>
+          <div class="step">$$\\begin{vmatrix} x-3 & y+1 & z-2 \\\\ 1 & 0 & -3 \\\\ -1 & 1 & 0 \\end{vmatrix} = 0$$</div>
+          <div class="step">Раскрываем: $3y + 3 + z - 2 + 3x + 9 = 0$.</div>
+          <div class="step">$$3x + 3y + z - 8 = 0$$</div>
+          <div class="answer">Ответ: $3x + 3y + z - 8 = 0$, вектор нормали $\\vec{n}\\{3;3;1\\}$.</div>
+        `
+      }
+    ]
+  },
+  {
+    id: "dist-point-plane",
+    title: "📐 Расстояние от точки до плоскости",
+    theory: `
+      <p>Расстояние от точки $M_0(x_0;y_0;z_0)$ до плоскости $Ax + By + Cz + D = 0$:</p>
+      <div class="formula-block">$$\\rho = \\frac{|Ax_0 + By_0 + Cz_0 + D|}{\\sqrt{A^2 + B^2 + C^2}}$$</div>
+    `,
+    tasks: [
+      {
+        title: "Задача 1",
+        body: "Найдите расстояние от точки $M_0(1;2;3)$ до плоскости $5x + 2y - z + 3 = 0$.",
+        solution: `
+          <div class="step">$\\vec{n}\\{5;2;-1\\}$.</div>
+          <div class="step">$$\\rho = \\frac{|5 \\cdot 1 + 2 \\cdot 2 - 1 \\cdot 3 + 3|}{\\sqrt{25 + 4 + 1}} = \\frac{9}{\\sqrt{30}}$$</div>
+          <div class="answer">Ответ: $\\dfrac{9}{\\sqrt{30}}$.</div>
+        `
+      },
+      {
+        title: "Задача 2",
+        body: "Найдите расстояние от точки $M_0(4;1;5)$ до плоскости, проходящей через точки $M_1(1;2;0)$, $M_2(0;1;0)$, $M_3(3;2;1)$.",
+        solution: `
+          <div class="step">1) Составим уравнение плоскости:</div>
+          <div class="step">$$\\begin{vmatrix} x-1 & y-2 & z \\\\ -1 & -1 & 0 \\\\ 2 & 0 & 1 \\end{vmatrix} = 0$$</div>
+          <div class="step">Получаем: $-x + 3y + z - 5 = 0$, $\\vec{n}\\{-1;3;1\\}$.</div>
+          <div class="step">2) Подставляем точку:</div>
+          <div class="step">$$\\rho = \\frac{|(-1) \\cdot 4 + 3 \\cdot 1 + 1 \\cdot 5 - 5|}{\\sqrt{1 + 9 + 1}} = \\frac{1}{\\sqrt{11}}$$</div>
+          <div class="answer">Ответ: $\\dfrac{1}{\\sqrt{11}}$.</div>
+        `
+      }
+    ]
+  },
+  {
+    id: "angle-lines",
+    title: "✖️ Угол между скрещивающимися прямыми",
+    theory: `
+      <p>Угол между прямыми — угол между их направляющими векторами $\\vec{m_1}$ и $\\vec{m_2}$:</p>
+      <div class="formula-block">$$\\cos\\alpha = \\frac{|\\vec{m_1} \\cdot \\vec{m_2}|}{|\\vec{m_1}| \\cdot |\\vec{m_2}|} = \\frac{|q_1 q_2 + p_1 p_2 + n_1 n_2|}{\\sqrt{q_1^2 + p_1^2 + n_1^2} \\cdot \\sqrt{q_2^2 + p_2^2 + n_2^2}}$$</div>
+      <p>Угол: $\\alpha = \\arccos(\\cos\\alpha)$.</p>
+    `,
+    tasks: [
+      {
+        title: "Задача 1",
+        body: "Найдите угол между прямыми $a: \\dfrac{x-2}{2} = \\dfrac{y-1}{4} = \\dfrac{z-3}{2}$ и $b: \\dfrac{x-4}{2} = \\dfrac{y-3}{5} = \\dfrac{z-5}{1}$.",
+        solution: `
+          <div class="step">$\\vec{m_1}\\{2;4;2\\}$, $\\vec{m_2}\\{2;5;1\\}$.</div>
+          <div class="step">$$\\cos\\alpha = \\frac{|2 \\cdot 2 + 4 \\cdot 5 + 2 \\cdot 1|}{\\sqrt{4+16+4} \\cdot \\sqrt{4+25+1}} = \\frac{26}{\\sqrt{24} \\cdot \\sqrt{30}} = \\frac{13}{\\sqrt{180}}$$</div>
+          <div class="answer">Ответ: $\\alpha = \\arccos\\dfrac{13}{\\sqrt{180}}$.</div>
+        `
+      },
+      {
+        title: "Задача 2",
+        body: "Найдите угол между прямой $a$, проходящей через $M_1(2;1;4)$ и $M_2(5;2;6)$, и прямой $b$ через $N_1(0;1;4)$ и $N_2(1;3;5)$.",
+        solution: `
+          <div class="step">Уравнение $a$: $\\dfrac{x-2}{3} = \\dfrac{y-1}{1} = \\dfrac{z-4}{2}$, $\\vec{m_1}\\{3;1;2\\}$.</div>
+          <div class="step">Уравнение $b$: $\\dfrac{x}{1} = \\dfrac{y-1}{2} = \\dfrac{z-4}{1}$, $\\vec{m_2}\\{1;2;1\\}$.</div>
+          <div class="step">$$\\cos\\alpha = \\frac{|3 \\cdot 1 + 1 \\cdot 2 + 2 \\cdot 1|}{\\sqrt{9+1+4} \\cdot \\sqrt{1+4+1}} = \\frac{7}{\\sqrt{14} \\cdot \\sqrt{6}} = \\frac{7}{\\sqrt{84}}$$</div>
+          <div class="answer">Ответ: $\\alpha = \\arccos\\dfrac{7}{\\sqrt{84}}$.</div>
+        `
+      }
+    ]
+  },
+  {
+    id: "angle-line-plane",
+    title: "📐 Угол между прямой и плоскостью",
+    theory: `
+      <p>Синус угла между прямой (направляющий вектор $\\vec{c}\\{m;n;p\\}$) и плоскостью ($\\vec{n}\\{A;B;C\\}$):</p>
+      <div class="formula-block">$$\\sin\\alpha = \\frac{|\\vec{c} \\cdot \\vec{n}|}{|\\vec{c}| \\cdot |\\vec{n}|} = \\frac{|mA + nB + pC|}{\\sqrt{m^2+n^2+p^2} \\cdot \\sqrt{A^2+B^2+C^2}}$$</div>
+      <p>Угол: $\\alpha = \\arcsin(\\sin\\alpha)$.</p>
+    `,
+    tasks: [
+      {
+        title: "Задача 1",
+        body: "Найдите угол между прямой $b: \\dfrac{x-3}{2} = \\dfrac{y+1}{-1} = \\dfrac{z-4}{3}$ и плоскостью $\\alpha: 3x - y - z + 1 = 0$.",
+        solution: `
+          <div class="step">$\\vec{c}\\{2;-1;3\\}$, $\\vec{n}\\{3;-1;-1\\}$.</div>
+          <div class="step">$$\\sin\\alpha = \\frac{|2 \\cdot 3 + (-1)(-1) + 3 \\cdot (-1)|}{\\sqrt{4+1+9} \\cdot \\sqrt{9+1+1}} = \\frac{4}{\\sqrt{14} \\cdot \\sqrt{11}} = \\frac{4}{\\sqrt{154}}$$</div>
+          <div class="answer">Ответ: $\\alpha = \\arcsin\\dfrac{4}{\\sqrt{154}}$.</div>
+        `
+      },
+      {
+        title: "Задача 2",
+        body: "Найдите угол между плоскостью $\\alpha$ через точки $A(1;3;2)$, $B(-2;4;1)$, $C(3;-3;1)$ и прямой $b$ через $A(0;2;-1)$ и $B(-2;4;-1)$.",
+        solution: `
+          <div class="step">1) Уравнение плоскости: $-5x + y + 16z + 42 = 0$, $\\vec{n}\\{-5;1;16\\}$.</div>
+          <div class="step">2) Направляющий вектор прямой: $\\vec{c}\\{-2;2;0\\}$.</div>
+          <div class="step">$$\\sin\\alpha = \\frac{|-2 \\cdot (-5) + 2 \\cdot 1 + 0 \\cdot 16|}{\\sqrt{4+4+0} \\cdot \\sqrt{25+1+256}} = \\frac{12}{\\sqrt{8} \\cdot \\sqrt{282}} = \\frac{3}{\\sqrt{141}}$$</div>
+          <div class="answer">Ответ: $\\alpha = \\arcsin\\dfrac{3}{\\sqrt{141}}$.</div>
+        `
+      }
+    ]
+  },
+  {
+    id: "angle-planes",
+    title: "🧊 Угол между плоскостями",
+    theory: `
+      <p>Косинус угла между плоскостями с векторами нормали $\\vec{n_1}\\{A_1;B_1;C_1\\}$ и $\\vec{n_2}\\{A_2;B_2;C_2\\}$:</p>
+      <div class="formula-block">$$\\cos\\alpha = \\frac{|A_1 A_2 + B_1 B_2 + C_1 C_2|}{\\sqrt{A_1^2+B_1^2+C_1^2} \\cdot \\sqrt{A_2^2+B_2^2+C_2^2}}$$</div>
+      <p>Если $\\cos\\alpha = 0$, плоскости перпендикулярны.</p>
+    `,
+    tasks: [
+      {
+        title: "Задача 1",
+        body: "Найдите угол между плоскостью $\\alpha$ через точки $A(5;3;1)$, $B(-2;6;3)$, $C(1;-4;3)$ и плоскостью $\\beta$ через $D(4;2;6)$, $B(1;-3;2)$, $C(5;-2;1)$.",
+        solution: `
+          <div class="step">Уравнение $\\alpha$: $-2x - 2y + 3z + 37 = 0$, $\\vec{n_1}\\{-2;-2;3\\}$.</div>
+          <div class="step">Уравнение $\\beta$: $-21x + 11y + 17z - 40 = 0$, $\\vec{n_2}\\{-21;11;17\\}$.</div>
+          <div class="step">$$\\cos\\alpha = \\frac{|(-2)(-21) + (-2) \\cdot 11 + 3 \\cdot 17|}{\\sqrt{4+4+9} \\cdot \\sqrt{441+121+289}} = \\frac{71}{\\sqrt{17} \\cdot \\sqrt{851}}$$</div>
+          <div class="answer">Ответ: $\\alpha = \\arccos\\dfrac{71}{\\sqrt{14467}}$.</div>
+        `
+      }
+    ]
+  },
+  {
+    id: "exam-tasks",
+    title: "🎯 Экзаменационные задачи №14",
+    theory: `
+      <p>Реальные задачи из ЕГЭ, решаемые методом координат. Каждая задача содержит доказательство (пункт а) и вычисление (пункт б).</p>
+    `,
+    tasks: [
+      {
+        title: "Задача 1. Правильная треугольная пирамида",
+        body: "Основание правильной треугольной пирамиды $МАВС$ — треугольник $АВС$ со стороной 6. Ребро $МА$ перпендикулярно грани $МВС$. Через вершину $М$ и середины рёбер $АС$ и $ВС$ проведена плоскость $\\alpha$.<br>а) Докажите, что сечение пирамиды плоскостью $\\alpha$ — равносторонний треугольник.<br>б) Найдите расстояние от вершины $С$ до плоскости $\\alpha$.",
+        solution: `
+          <div class="step"><b>а)</b> Введём систему координат: $A(0;0;0)$, $Ox$ вдоль $AB$. Тогда $B(6;0;0)$, $C(3;3\\sqrt{3};0)$. Центр $O$ треугольника $ABC$: $O(3;\\sqrt{3};0)$. Так как $MA \\perp MBC$, то $MA \\parallel MO$, откуда $M(3;\\sqrt{3};\\sqrt{6})$.</div>
+          <div class="step">$K$ — середина $AC$: $K(1{,}5;\\ 1{,}5\\sqrt{3};\\ 0)$. $L$ — середина $BC$: $L(3;0;0)$.</div>
+          <div class="step">$|ML| = \\sqrt{(3-3)^2 + (\\sqrt{3}-0)^2 + (\\sqrt{6}-0)^2} = 3$.</div>
+          <div class="step">$|MK| = \\sqrt{(3-1{,}5)^2 + (\\sqrt{3}-1{,}5\\sqrt{3})^2 + 6} = 3$.</div>
+          <div class="step">$|KL| = \\sqrt{(3-1{,}5)^2 + (0-1{,}5\\sqrt{3})^2} = 3$.</div>
+          <div class="step">Все стороны равны $\\Rightarrow$ сечение — равносторонний треугольник.</div>
+          <div class="step"><b>б)</b> Уравнение плоскости $\\alpha$ через $M$, $K$, $L$: $\\vec{n}\\{0;\\ 2\\sqrt{6};\\ \\sqrt{3}\\}$.</div>
+          <div class="step">$$\\rho(C;\\alpha) = \\frac{|0 \\cdot 3 + 2\\sqrt{6} \\cdot 3\\sqrt{3} + \\sqrt{3} \\cdot 0 - 9\\sqrt{2}|}{\\sqrt{0 + 24 + 3}} = \\frac{9\\sqrt{2}}{3\\sqrt{3}} = \\sqrt{6}$$</div>
+          <div class="answer">Ответ: б) $\\rho(C;\\alpha) = \\sqrt{6}$.</div>
+        `
+      },
+      {
+        title: "Задача 2. Правильная четырёхугольная призма",
+        body: "Дана правильная четырёхугольная призма $ABCDA_1B_1C_1D_1$.<br>а) Докажите, что плоскости $AD_1C$ и $B_1D_1$ перпендикулярны.<br>б) Найдите расстояние от точки $B_1$ до плоскости $AD_1C$, если $AB = 5$ и $AA_1 = 6$.",
+        solution: `
+          <div class="step"><b>а)</b> Система координат: $B(0;0;0)$, $Ox$ вдоль $AB$, $Oy$ вдоль $BC$, $Oz$ вдоль $BB_1$. Пусть $AB = a$, $AA_1 = b$. Тогда $A(a;0;0)$, $D_1(a;a;b)$, $B_1(0;0;b)$, $C(0;a;0)$.</div>
+          <div class="step">Векторы нормали: $\\vec{n_1}\\{-ba;-ba;a^2\\}$ для $AD_1C$, $\\vec{n_2}\\{-ab;ab;0\\}$ для $BB_1D_1$.</div>
+          <div class="step">Скалярное произведение: $a^2b^2 - a^2b^2 + 0 = 0$ $\\Rightarrow$ плоскости перпендикулярны.</div>
+          <div class="step"><b>б)</b> $AB = 5$, $AA_1 = 6$. Координаты: $A(5;0;0)$, $B_1(0;0;6)$, $D_1(5;5;6)$, $C(0;5;0)$.</div>
+          <div class="step">Уравнение $AD_1C$: $30x + 30y - 25z - 150 = 0$, $\\vec{n}\\{-6;6;-5\\}$.</div>
+          <div class="step">$$\\rho(B_1;AD_1C) = \\frac{|0 \\cdot (-6) + 0 \\cdot 6 + 6 \\cdot (-5) - 150|}{\\sqrt{36+36+25}} = \\frac{60}{\\sqrt{97}}$$</div>
+          <div class="answer">Ответ: б) $\\dfrac{60}{\\sqrt{97}}$.</div>
+        `
+      }
+    ]
+  }
+];
+
+/* =========================================================
+   ЛОГИКА
+   ========================================================= */
+const app = document.getElementById("app");
+const searchInput = document.getElementById("search");
+
+function renderLatex(el) {
+  if (window.renderMathInElement) {
+    renderMathInElement(el, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+}
+
+function renderMenu() {
+  searchInput.value = "";
+  app.innerHTML = `
+    <div class="menu">
+      ${sections.map(s => `
+        <button onclick="openSection('${s.id}')">
+          <span>${s.title}</span>
+          <span class="count">${s.tasks.length}</span>
+        </button>
+      `).join("")}
+    </div>
+  `;
+  renderLatex(app);
+}
+
+function openSection(id) {
+  const s = sections.find(x => x.id === id);
+  if (!s) return;
+
+  app.innerHTML = `
+    <div class="section-header">
+      <button class="back-btn" onclick="renderMenu()">← Назад</button>
+      <h2>${s.title}</h2>
+    </div>
+    ${s.theory ? `<div class="theory">${s.theory}</div>` : ""}
+    <div id="tasks"></div>
+  `;
+
+  const box = document.getElementById("tasks");
+  if (s.tasks.length === 0) {
+    box.innerHTML = `<div class="empty">В этом разделе пока нет задач.</div>`;
+  } else {
+    s.tasks.forEach((t, i) => {
+      const card = document.createElement("div");
+      card.className = "task";
+      card.style.animationDelay = (i * 80) + "ms";
+      card.innerHTML = `
+        <div class="task-title">${t.title}</div>
+        <div class="task-body">${t.body}</div>
+        <button class="btn-solution" onclick="toggleSolution(this)">Показать решение</button>
+        <div class="solution">${t.solution}</div>
+      `;
+      box.appendChild(card);
+    });
+  }
+  renderLatex(app);
+}
+
+function toggleSolution(btn) {
+  const sol = btn.nextElementSibling;
+  if (sol.classList.contains("show")) {
+    sol.classList.remove("show");
+    btn.textContent = "Показать решение";
+  } else {
+    sol.classList.add("show");
+    btn.textContent = "Скрыть решение";
+  }
+  renderLatex(sol);
+}
+
+searchInput.addEventListener("input", () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q) { renderMenu(); return; }
+  const found = sections.filter(s =>
+    s.title.toLowerCase().includes(q) ||
+    (s.theory && s.theory.toLowerCase().includes(q)) ||
+    s.tasks.some(t => t.title.toLowerCase().includes(q) || t.body.toLowerCase().includes(q))
+  );
+  app.innerHTML = `
+    <div class="section-header">
+      <button class="back-btn" onclick="renderMenu()">← Назад</button>
+      <h2>Поиск: «${q}»</h2>
+    </div>
+    <div class="menu" id="search-menu"></div>
+  `;
+  const menu = document.getElementById("search-menu");
+  if (found.length === 0) {
+    menu.innerHTML = `<div class="empty">Ничего не найдено.</div>`;
+  } else {
+    found.forEach(s => {
+      const b = document.createElement("button");
+      b.innerHTML = `<span>${s.title}</span><span class="count">${s.tasks.length}</span>`;
+      b.onclick = () => openSection(s.id);
+      menu.appendChild(b);
+    });
+  }
+  renderLatex(app);
+});
+
+renderMenu();
+</script>
+</body>
+</html>
