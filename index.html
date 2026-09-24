@@ -22,7 +22,6 @@
     background: #2a0d0d;
   }
 
-  /* Фон: тёмно-бордовый с текстурой бумаги */
   body::before {
     content: "";
     position: fixed; inset: 0;
@@ -34,7 +33,6 @@
     background-blend-mode: multiply;
     z-index: -2;
   }
-  /* Мягкие световые пятна — сдержанные, тёплые */
   body::after {
     content: "";
     position: fixed; inset: 0;
@@ -87,7 +85,6 @@
     background: rgba(255,240,230,.11);
   }
 
-  /* Меню тем */
   .menu { display: grid; gap: 10px; }
   .menu-item {
     width: 100%;
@@ -118,7 +115,6 @@
     font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
   }
 
-  /* Заголовок раздела */
   .section-header {
     display: flex;
     align-items: baseline;
@@ -149,7 +145,6 @@
     border-color: rgba(220,180,160,.6);
   }
 
-  /* Теория */
   .theory {
     background: rgba(255,240,230,.06);
     border: 1px solid rgba(220,180,160,.2);
@@ -179,7 +174,6 @@
     margin: 10px 0;
   }
 
-  /* Карточка задачи */
   .task {
     background: rgba(255,240,230,.06);
     border: 1px solid rgba(220,180,160,.2);
@@ -581,4 +575,197 @@ const sections = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Right_prism.svg/400px-Right_prism.svg.png",
         solution: `
           <div class="step"><b>а)</b> $\\vec{n_1}\\{-ba;-ba;a^2\\}$, $\\vec{n_2}\\{-ab;ab;0\\}$. Скалярное произведение $=0$.</div>
-          <div class="step"><b>б)</b> $AD_1
+          <div class="step"><b>б)</b> $AD_1C$: $30x+30y-25z-150=0$, $\\vec{n}\\{-6;6;-5\\}$.</div>
+          <div class="step">$$\\rho = \\frac{180}{\\sqrt{97}} = \\frac{60}{\\sqrt{97}}$$</div>
+          <div class="answer">Ответ: б) $\\dfrac{60}{\\sqrt{97}}$.</div>
+        `
+      },
+      {
+        title: "✏️ Задача 3. Правильный тетраэдр",
+        body: "В правильном тетраэдре $ABCD$ проведена высота $DH$. $K$ — середина $CH$. $BM$ — медиана боковой грани $BCD$.<br>а) Докажите, что угол между $DH$ и $BM$ равен углу $BMK$.<br>б) Найдите угол между $DH$ и $BM$.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Tetrahedron.svg/400px-Tetrahedron.svg.png",
+        solution: `
+          <div class="step">$\\overrightarrow{DH} = (0;0;-a\\sqrt{6}/3)$, $\\overrightarrow{BM} = (-a/2; a\\sqrt{3}/3; a\\sqrt{6}/6)$.</div>
+          <div class="step">$$\\cos\\alpha = \\frac{\\sqrt{2}}{3}$$</div>
+          <div class="answer">Ответ: $\\alpha = \\arccos\\dfrac{\\sqrt{2}}{3}$.</div>
+        `
+      },
+      {
+        title: "✏️ Задача 4. Куб",
+        body: "В кубе $ABCDA_1B_1C_1D_1$ точка $E$ — середина ребра $CC_1$.<br>а) Докажите, что угол между прямыми $BE$ и $AD$ равен углу $CBE$.<br>б) Найдите угол между прямыми $BE$ и $AD$.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Cube_ABCDA1B1C1D1.svg/400px-Cube_ABCDA1B1C1D1.svg.png",
+        solution: `
+          <div class="step">$\\overrightarrow{BE} = (0;a;a/2)$, $\\overrightarrow{AD} = (0;a;0)$.</div>
+          <div class="step">$$\\cos\\alpha = \\frac{2}{\\sqrt{5}} = \\frac{2\\sqrt{5}}{5}$$</div>
+          <div class="answer">Ответ: $\\alpha = \\arccos\\dfrac{2\\sqrt{5}}{5}$.</div>
+        `
+      },
+      {
+        title: "✏️ Задача 5. Правильная треугольная призма",
+        body: "Основание прямой призмы $ABCA_1B_1C_1$ — равнобедренный треугольник $ABC$ ($AB = AC = 5$, $BC = 8$). Высота призмы 3.<br>а) Докажите, что треугольник $A_1BC$ остроугольный.<br>б) Найдите угол между прямой $A_1B$ и плоскостью $BCC_1$.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Triangular_prism.svg/400px-Triangular_prism.svg.png",
+        solution: `
+          <div class="step"><b>а)</b> $A_1B^2 = 34$, $A_1C^2 = 34$, $BC^2 = 64$. Так как $64 < 68$, треугольник остроугольный.</div>
+          <div class="step"><b>б)</b> $\\overrightarrow{A_1B} = (3;-4;-3)$, $\\vec{n}\\{1;0;0\\}$.</div>
+          <div class="step">$$\\sin\\alpha = \\frac{3}{\\sqrt{34}} = \\frac{3\\sqrt{34}}{34}$$</div>
+          <div class="answer">Ответ: б) $\\alpha = \\arcsin\\dfrac{3\\sqrt{34}}{34}$.</div>
+        `
+      }
+    ]
+  }
+];
+
+/* =========================================================
+   ЛОГИКА
+   ========================================================= */
+const app = document.getElementById("app");
+const searchInput = document.getElementById("search");
+
+function renderLatex(el) {
+  if (window.renderMathInElement) {
+    renderMathInElement(el, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+}
+
+function renderMenu() {
+  searchInput.value = "";
+  app.innerHTML = `
+    <div class="menu">
+      ${sections.map(s => {
+        const count = s.generators ? s.generators.length : s.tasks.length;
+        return `
+          <button class="menu-item" onclick="openSection('${s.id}')">
+            <span>${s.title}</span>
+            <span class="count">${count} задач</span>
+          </button>
+        `;
+      }).join("")}
+    </div>
+  `;
+  renderLatex(app);
+}
+
+function openSection(id) {
+  const s = sections.find(x => x.id === id);
+  if (!s) return;
+
+  app.innerHTML = `
+    <div class="section-header">
+      <button class="back-btn" onclick="renderMenu()">← К списку тем</button>
+      <h2>${s.title}</h2>
+    </div>
+    ${s.theory ? `<div class="theory">${s.theory}</div>` : ""}
+    <div id="tasks"></div>
+  `;
+
+  const box = document.getElementById("tasks");
+
+  if (s.generators) {
+    s.generators.forEach((gen, i) => {
+      const task = gen();
+      const card = document.createElement("div");
+      card.className = "task";
+      card.dataset.genIndex = i;
+      card.dataset.sectionId = s.id;
+      card.innerHTML = `
+        <div class="task-title">
+          <span>Задача ${i + 1}</span>
+          <span class="regen">числа генерируются заново</span>
+        </div>
+        <div class="task-body">${task.body}</div>
+        <div class="btn-row">
+          <button class="btn-solution" onclick="toggleSolution(this)">Показать решение</button>
+          <button class="btn-regen" onclick="regenTask(this)">Сгенерировать заново</button>
+        </div>
+        <div class="solution">${task.solution}</div>
+      `;
+      box.appendChild(card);
+    });
+  } else if (s.tasks && s.tasks.length > 0) {
+    s.tasks.forEach(t => {
+      const card = document.createElement("div");
+      card.className = "task";
+      card.innerHTML = `
+        <div class="task-title">${t.title}</div>
+        <div class="task-body">${t.body}</div>
+        ${t.img ? `<img class="task-img" src="${t.img}" alt="Чертёж">` : ""}
+        <button class="btn-solution" onclick="toggleSolution(this)">Показать решение</button>
+        <div class="solution">${t.solution}</div>
+      `;
+      box.appendChild(card);
+    });
+  } else {
+    box.innerHTML = `<div class="empty">В этом разделе пока нет задач.</div>`;
+  }
+
+  renderLatex(app);
+}
+
+function toggleSolution(btn) {
+  const sol = btn.closest(".task").querySelector(".solution");
+  if (sol.classList.contains("show")) {
+    sol.classList.remove("show");
+    btn.textContent = "Показать решение";
+  } else {
+    sol.classList.add("show");
+    btn.textContent = "Скрыть решение";
+  }
+  renderLatex(sol);
+}
+
+function regenTask(btn) {
+  const card = btn.closest(".task");
+  const sectionId = card.dataset.sectionId;
+  const genIndex = parseInt(card.dataset.genIndex);
+  const s = sections.find(x => x.id === sectionId);
+  if (!s || !s.generators) return;
+
+  const task = s.generators[genIndex]();
+  card.querySelector(".task-body").innerHTML = task.body;
+  const sol = card.querySelector(".solution");
+  sol.innerHTML = task.solution;
+  sol.classList.remove("show");
+  card.querySelector(".btn-solution").textContent = "Показать решение";
+  renderLatex(card);
+}
+
+searchInput.addEventListener("input", () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q) { renderMenu(); return; }
+  const found = sections.filter(s =>
+    s.title.toLowerCase().includes(q) ||
+    (s.theory && s.theory.toLowerCase().includes(q))
+  );
+  app.innerHTML = `
+    <div class="section-header">
+      <button class="back-btn" onclick="renderMenu()">← К списку</button>
+      <h2>Поиск: «${q}»</h2>
+    </div>
+    <div class="menu" id="search-menu"></div>
+  `;
+  const menu = document.getElementById("search-menu");
+  if (found.length === 0) {
+    menu.innerHTML = `<div class="empty">Ничего не найдено.</div>`;
+  } else {
+    found.forEach(s => {
+      const count = s.generators ? s.generators.length : s.tasks.length;
+      const b = document.createElement("button");
+      b.className = "menu-item";
+      b.innerHTML = `<span>${s.title}</span><span class="count">${count} задач</span>`;
+      b.onclick = () => openSection(s.id);
+      menu.appendChild(b);
+    });
+  }
+  renderLatex(app);
+});
+
+renderMenu();
+</script>
+</body>
+</html>
