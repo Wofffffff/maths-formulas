@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Задание №14 ЕГЭ — метод координат</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #f3ece6;
+    min-height: 100vh;
+    padding: 30px 16px;
+    position: relative;
+    overflow-x: hidden;
+    background: #2a0d0d;
+  }
+
+  /* Фон: тёмно-бордовый с текстурой бумаги */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(160deg, rgba(60,15,15,.95), rgba(30,8,8,.96)),
+      url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1920&q=80");
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: multiply;
+    z-index: -2;
+  }
+  /* Мягкие световые пятна — сдержанные, тёплые */
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    background: radial-gradient(circle at 15% 10%, rgba(180,60,40,.25), transparent 45%),
+                radial-gradient(circle at 85% 90%, rgba(120,30,30,.28), transparent 50%);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .container { max-width: 880px; margin: 0 auto; position: relative; }
+
+  header {
+    border-bottom: 2px solid rgba(220,180,160,.35);
+    padding-bottom: 16px;
+    margin-bottom: 26px;
+  }
+
+  h1 {
+    font-size: 27px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #f7e9df;
+    letter-spacing: .3px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: #c9a99a;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .search-box { margin-bottom: 24px; }
+  .search-box input {
+    width: 100%;
+    padding: 11px 16px;
+    font-size: 15px;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    border: 1px solid rgba(220,180,160,.3);
+    border-radius: 6px;
+    background: rgba(255,240,230,.07);
+    color: #f3ece6;
+    outline: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: .2s;
+  }
+  .search-box input::placeholder { color: #b08f82; }
+  .search-box input:focus {
+    border-color: rgba(220,180,160,.6);
+    background: rgba(255,240,230,.11);
+  }
+
+  /* Меню тем */
+  .menu { display: grid; gap: 10px; }
+  .menu-item {
+    width: 100%;
+    text-align: left;
+    padding: 16px 20px;
+    font-size: 16.5px;
+    font-family: Georgia, "Times New Roman", serif;
+    background: rgba(255,240,230,.06);
+    border: 1px solid rgba(220,180,160,.22);
+    border-radius: 8px;
+    cursor: pointer;
+    color: #f3ece6;
+    transition: .2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .menu-item:hover {
+    background: rgba(255,240,230,.12);
+    border-color: rgba(220,180,160,.5);
+    transform: translateX(3px);
+  }
+  .menu-item .count {
+    font-size: 13px;
+    color: #c9a99a;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  /* Заголовок раздела */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(220,180,160,.3);
+  }
+  .section-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #f7e9df;
+    flex: 1;
+  }
+  .back-btn {
+    padding: 7px 14px;
+    font-size: 14px;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: rgba(255,240,230,.08);
+    border: 1px solid rgba(220,180,160,.3);
+    border-radius: 6px;
+    cursor: pointer;
+    color: #f3ece6;
+    transition: .2s;
+  }
+  .back-btn:hover {
+    background: rgba(255,240,230,.16);
+    border-color: rgba(220,180,160,.6);
+  }
+
+  /* Теория */
+  .theory {
+    background: rgba(255,240,230,.06);
+    border: 1px solid rgba(220,180,160,.2);
+    border-left: 4px solid #b8503a;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    font-size: 15.5px;
+    color: #ecdfd6;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .theory h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #f0c9b8;
+    font-weight: 700;
+  }
+  .theory p { margin-bottom: 10px; }
+  .theory ol { padding-left: 22px; }
+  .theory li { margin-bottom: 5px; }
+
+  .formula-block {
+    text-align: center;
+    padding: 12px 0;
+    font-size: 19px;
+    margin: 10px 0;
+  }
+
+  /* Карточка задачи */
+  .task {
+    background: rgba(255,240,230,.06);
+    border: 1px solid rgba(220,180,160,.2);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: .25s;
+    box-shadow: 0 6px 26px rgba(0,0,0,.35);
+  }
+  .task:hover {
+    border-color: rgba(220,180,160,.45);
+    background: rgba(255,240,230,.09);
+  }
+
+  .task-title {
+    font-size: 15.5px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #f0c9b8;
+    font-family: Georgia, "Times New Roman", serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .task-title .regen {
+    font-size: 12px;
+    color: #b08f82;
+    font-weight: 400;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .task-body {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #ecdfd6;
+  }
+
+  .task-img {
+    display: block;
+    max-width: 100%;
+    margin: 14px auto;
+    border: 1px solid rgba(220,180,160,.3);
+    border-radius: 6px;
+    background: #f7f3ee;
+    padding: 6px;
+  }
+
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn-solution, .btn-regen {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: rgba(255,240,230,.08);
+    border: 1px solid rgba(220,180,160,.35);
+    border-radius: 6px;
+    cursor: pointer;
+    color: #f3ece6;
+    transition: .2s;
+  }
+  .btn-solution:hover, .btn-regen:hover {
+    background: rgba(184,80,58,.3);
+    border-color: rgba(220,140,110,.7);
+  }
+  .btn-regen { color: #d9b5a5; }
+
+  .solution {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed rgba(220,180,160,.3);
+    font-size: 15.5px;
+    display: none;
+    color: #ecdfd6;
+  }
+  .solution.show { display: block; }
+  .solution .step { margin-bottom: 8px; }
+  .solution .answer {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(220,180,160,.25);
+    font-weight: 700;
+    color: #f0b89a;
+  }
+
+  .empty {
+    text-align: center;
+    color: #b08f82;
+    padding: 40px 0;
+    font-size: 15px;
+  }
+
+  .katex { color: #f7e9df; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📐 Задание №14 ЕГЭ — метод координат</h1>
+    <p class="subtitle">∑ теория · π задачи с решениями · ∞ генератор чисел</p>
+  </header>
+
+  <div class="search-box">
+    <input type="text" id="search" placeholder="🔍 Поиск по темам...">
+  </div>
+
+  <div id="app"></div>
+</div>
+
+<script>
+/* =========================================================
+   ГЕНЕРАТОР ЧИСЕЛ
+   ========================================================= */
+function ri(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function riNZ(min, max) {
+  let v = 0;
+  while (v === 0) v = ri(min, max);
+  return v;
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function sqrtSimplify(n) {
+  let out = 1, inner = n;
+  for (let i = 2; i * i <= inner; i++) {
+    while (inner % (i * i) === 0) { out *= i; inner /= i * i; }
+  }
+  if (inner === 1) return String(out);
+  if (out === 1) return `\\sqrt{${inner}}`;
+  return `${out}\\sqrt{${inner}}`;
+}
+
+/* =========================================================
+   ГЕНЕРАТОРЫ ЗАДАЧ
+   ========================================================= */
+function genLine() {
+  const x1 = riNZ(-5, 5), y1 = riNZ(-5, 5), z1 = riNZ(-5, 5);
+  let x2, y2, z2;
+  do {
+    x2 = riNZ(-5, 5); y2 = riNZ(-5, 5); z2 = riNZ(-5, 5);
+  } while (x2 === x1 && y2 === y1 && z2 === z1);
+  const dx = x2 - x1, dy = y2 - y1, dz = z2 - z1;
+  const fmtX = x1 >= 0 ? `x - ${x1}` : `x + ${-x1}`;
+  const fmtY = y1 >= 0 ? `y - ${y1}` : `y + ${-y1}`;
+  const fmtZ = z1 >= 0 ? `z - ${z1}` : `z + ${-z1}`;
+  return {
+    title: "📏 Уравнение прямой",
+    body: `Составьте каноническое уравнение прямой, проходящей через точки $M_1(${x1};${y1};${z1})$ и $M_2(${x2};${y2};${z2})$.`,
+    solution: `
+      <div class="step">$\\overrightarrow{M_1M_2} = \\{${dx};${dy};${dz}\\}$.</div>
+      <div class="step">$$\\frac{${fmtX}}{${dx}} = \\frac{${fmtY}}{${dy}} = \\frac{${fmtZ}}{${dz}}$$</div>
+      <div class="answer">Ответ: $\\dfrac{${fmtX}}{${dx}} = \\dfrac{${fmtY}}{${dy}} = \\dfrac{${fmtZ}}{${dz}}$, $\\vec{m}\\{${dx};${dy};${dz}\\}$.</div>
+    `
+  };
+}
+
+function genDistPointLine() {
+  const x0 = riNZ(-4, 4), y0 = riNZ(-4, 4), z0 = riNZ(-4, 4);
+  const x1 = riNZ(-4, 4), y1 = riNZ(-4, 4), z1 = riNZ(-4, 4);
+  let m, n, p;
+  do { m = riNZ(-4, 4); n = riNZ(-4, 4); p = riNZ(-4, 4); }
+  while (m === 0 && n === 0 && p === 0);
+  const ax = x0 - x1, ay = y0 - y1, az = z0 - z1;
+  const cx = ay * p - az * n;
+  const cy = az * m - ax * p;
+  const cz = ax * n - ay * m;
+  const cLen2 = cx*cx + cy*cy + cz*cz;
+  const sLen2 = m*m + n*n + p*p;
+  const fmtX = x1 >= 0 ? `x - ${x1}` : `x + ${-x1}`;
+  const fmtY = y1 >= 0 ? `y - ${y1}` : `y + ${-y1}`;
+  const fmtZ = z1 >= 0 ? `z - ${z1}` : `z + ${-z1}`;
+  return {
+    title: "📍 Расстояние от точки до прямой",
+    body: `Найдите расстояние от точки $M(${x0};${y0};${z0})$ до прямой $\\dfrac{${fmtX}}{${m}} = \\dfrac{${fmtY}}{${n}} = \\dfrac{${fmtZ}}{${p}}$.`,
+    solution: `
+      <div class="step">$\\vec{s}\\{${m};${n};${p}\\}$, $M_0(${x1};${y1};${z1})$, $\\overrightarrow{M_0M} = \\{${ax};${ay};${az}\\}$.</div>
+      <div class="step">$\\vec{c} = \\{${cx};${cy};${cz}\\}$, $|\\vec{c}| = ${sqrtSimplify(cLen2)}$, $|\\vec{s}| = ${sqrtSimplify(sLen2)}$.</div>
+      <div class="step">$$d = \\frac{${sqrtSimplify(cLen2)}}{${sqrtSimplify(sLen2)}}$$</div>
+      <div class="answer">Ответ: $d = \\dfrac{${sqrtSimplify(cLen2)}}{${sqrtSimplify(sLen2)}}$.</div>
+    `
+  };
+}
+
+function genPlane() {
+  const x1 = riNZ(-4, 4), y1 = riNZ(-4, 4), z1 = riNZ(-4, 4);
+  let x2, y2, z2, x3, y3, z3, A, B, C;
+  do {
+    x2 = riNZ(-4, 4); y2 = riNZ(-4, 4); z2 = riNZ(-4, 4);
+    x3 = riNZ(-4, 4); y3 = riNZ(-4, 4); z3 = riNZ(-4, 4);
+    const a1 = x2 - x1, b1 = y2 - y1, c1 = z2 - z1;
+    const a2 = x3 - x1, b2 = y3 - y1, c2 = z3 - z1;
+    A = b1 * c2 - c1 * b2;
+    B = c1 * a2 - a1 * c2;
+    C = a1 * b2 - b1 * a2;
+  } while (A === 0 && B === 0 && C === 0);
+  const D = -(A * x1 + B * y1 + C * z1);
+  const t = (coef, v) => coef === 0 ? "" : ` ${coef > 0 ? "+" : "−"} ${Math.abs(coef) === 1 ? "" : Math.abs(coef)}${v}`;
+  const eq = `${A}x${t(B,"y")}${t(C,"z")}${D >= 0 ? " + " + D : " − " + Math.abs(D)} = 0`;
+  return {
+    title: "🧊 Уравнение плоскости",
+    body: `Составьте уравнение плоскости через точки $A(${x1};${y1};${z1})$, $B(${x2};${y2};${z2})$, $C(${x3};${y3};${z3})$.`,
+    solution: `
+      <div class="step">Определитель с точками в первой строке.</div>
+      <div class="step">Раскрываем и получаем:</div>
+      <div class="step">$$${eq}$$</div>
+      <div class="answer">Ответ: $${eq}$, $\\vec{n}\\{${A};${B};${C}\\}$.</div>
+    `
+  };
+}
+
+function genDistPointPlane() {
+  let A, B, C, D;
+  do { A = riNZ(-5, 5); B = riNZ(-5, 5); C = riNZ(-5, 5); D = riNZ(-8, 8); }
+  while (A === 0 && B === 0 && C === 0);
+  const x0 = riNZ(-4, 4), y0 = riNZ(-4, 4), z0 = riNZ(-4, 4);
+  const num = Math.abs(A * x0 + B * y0 + C * z0 + D);
+  const den2 = A*A + B*B + C*C;
+  const t = (coef, v) => coef === 0 ? "" : ` ${coef > 0 ? "+" : "−"} ${Math.abs(coef) === 1 ? "" : Math.abs(coef)}${v}`;
+  const eq = `${A}x${t(B,"y")}${t(C,"z")}${D >= 0 ? " + " + D : " − " + Math.abs(D)} = 0`;
+  return {
+    title: "📐 Расстояние от точки до плоскости",
+    body: `Найдите расстояние от точки $M(${x0};${y0};${z0})$ до плоскости $${eq}$.`,
+    solution: `
+      <div class="step">$\\vec{n}\\{${A};${B};${C}\\}$.</div>
+      <div class="step">$$\\rho = \\frac{|${A} \\cdot ${x0} + ${B} \\cdot ${y0} + ${C} \\cdot ${z0} + (${D})|}{\\sqrt{${den2}}} = \\frac{${num}}{${sqrtSimplify(den2)}}$$</div>
+      <div class="answer">Ответ: $\\rho = \\dfrac{${num}}{${sqrtSimplify(den2)}}$.</div>
+    `
+  };
+}
+
+function genAngleLines() {
+  let m1, n1, p1, m2, n2, p2;
+  do {
+    m1 = riNZ(-4, 4); n1 = riNZ(-4, 4); p1 = riNZ(-4, 4);
+    m2 = riNZ(-4, 4); n2 = riNZ(-4, 4); p2 = riNZ(-4, 4);
+  } while ((m1 === 0 && n1 === 0 && p1 === 0) || (m2 === 0 && n2 === 0 && p2 === 0));
+  const dot = Math.abs(m1 * m2 + n1 * n2 + p1 * p2);
+  const l1 = m1*m1 + n1*n1 + p1*p1;
+  const l2 = m2*m2 + n2*n2 + p2*p2;
+  return {
+    title: "✖️ Угол между прямыми",
+    body: `Найдите угол между прямыми $\\dfrac{x}{${m1}} = \\dfrac{y}{${n1}} = \\dfrac{z}{${p1}}$ и $\\dfrac{x}{${m2}} = \\dfrac{y}{${n2}} = \\dfrac{z}{${p2}}$.`,
+    solution: `
+      <div class="step">$\\vec{m_1}\\{${m1};${n1};${p1}\\}$, $\\vec{m_2}\\{${m2};${n2};${p2}\\}$.</div>
+      <div class="step">$$\\cos\\alpha = \\frac{${dot}}{${sqrtSimplify(l1)} \\cdot ${sqrtSimplify(l2)}}$$</div>
+      <div class="answer">Ответ: $\\alpha = \\arccos\\dfrac{${dot}}{${sqrtSimplify(l1)} \\cdot ${sqrtSimplify(l2)}}$.</div>
+    `
+  };
+}
+
+function genAngleLinePlane() {
+  let m, n, p, A, B, C;
+  do {
+    m = riNZ(-4, 4); n = riNZ(-4, 4); p = riNZ(-4, 4);
+    A = riNZ(-4, 4); B = riNZ(-4, 4); C = riNZ(-4, 4);
+  } while ((m === 0 && n === 0 && p === 0) || (A === 0 && B === 0 && C === 0));
+  const dot = Math.abs(m * A + n * B + p * C);
+  const l1 = m*m + n*n + p*p;
+  const l2 = A*A + B*B + C*C;
+  const t = (coef, v) => coef === 0 ? "" : ` ${coef > 0 ? "+" : "−"} ${Math.abs(coef) === 1 ? "" : Math.abs(coef)}${v}`;
+  const eq = `${A}x${t(B,"y")}${t(C,"z")} = 0`;
+  return {
+    title: "📐 Угол между прямой и плоскостью",
+    body: `Найдите угол между прямой $\\dfrac{x}{${m}} = \\dfrac{y}{${n}} = \\dfrac{z}{${p}}$ и плоскостью $${eq}$.`,
+    solution: `
+      <div class="step">$\\vec{c}\\{${m};${n};${p}\\}$, $\\vec{n}\\{${A};${B};${C}\\}$.</div>
+      <div class="step">$$\\sin\\alpha = \\frac{${dot}}{${sqrtSimplify(l1)} \\cdot ${sqrtSimplify(l2)}}$$</div>
+      <div class="answer">Ответ: $\\alpha = \\arcsin\\dfrac{${dot}}{${sqrtSimplify(l1)} \\cdot ${sqrtSimplify(l2)}}$.</div>
+    `
+  };
+}
+
+function genAnglePlanes() {
+  let A1, B1, C1, A2, B2, C2;
+  do {
+    A1 = riNZ(-4, 4); B1 = riNZ(-4, 4); C1 = riNZ(-4, 4);
+    A2 = riNZ(-4, 4); B2 = riNZ(-4, 4); C2 = riNZ(-4, 4);
+  } while ((A1 === 0 && B1 === 0 && C1 === 0) || (A2 === 0 && B2 === 0 && C2 === 0));
+  const dot = Math.abs(A1 * A2 + B1 * B2 + C1 * C2);
+  const l1 = A1*A1 + B1*B1 + C1*C1;
+  const l2 = A2*A2 + B2*B2 + C2*C2;
+  const t = (coef, v) => coef === 0 ? "" : ` ${coef > 0 ? "+" : "−"} ${Math.abs(coef) === 1 ? "" : Math.abs(coef)}${v}`;
+  const eq1 = `${A1}x${t(B1,"y")}${t(C1,"z")} = 0`;
+  const eq2 = `${A2}x${t(B2,"y")}${t(C2,"z")} = 0`;
+  return {
+    title: "🧊 Угол между плоскостями",
+    body: `Найдите угол между плоскостями $${eq1}$ и $${eq2}$.`,
+    solution: `
+      <div class="step">$\\vec{n_1}\\{${A1};${B1};${C1}\\}$, $\\vec{n_2}\\{${A2};${B2};${C2}\\}$.</div>
+      <div class="step">$$\\cos\\alpha = \\frac{${dot}}{${sqrtSimplify(l1)} \\cdot ${sqrtSimplify(l2)}}$$</div>
+      <div class="answer">Ответ: $\\alpha = \\arccos\\dfrac{${dot}}{${sqrtSimplify(l1)} \\cdot ${sqrtSimplify(l2)}}$.</div>
+    `
+  };
+}
+
+/* =========================================================
+   ДАННЫЕ
+   ========================================================= */
+const sections = [
+  {
+    id: "intro",
+    title: "📐 Введение. Метод координат",
+    theory: `
+      <p><b>Метод координат</b> — способ решения геометрических задач, при котором вводят удобную систему координат и записывают все данные с её помощью.</p>
+      <p><b>Алгоритм:</b></p>
+      <ol>
+        <li>Выбираем систему координат в пространстве.</li>
+        <li>Находим координаты нужных точек.</li>
+        <li>Решаем задачу через формулы (уравнения прямых, плоскостей, расстояния, углы).</li>
+        <li>Переходим от аналитических соотношений к геометрическим.</li>
+      </ol>
+    `,
+    tasks: []
+  },
+  {
+    id: "line",
+    title: "📏 Уравнение прямой по двум точкам",
+    theory: `
+      <p>Каноническое уравнение прямой через точки $M_1(x_1;y_1;z_1)$ и $M_2(x_2;y_2;z_2)$:</p>
+      <div class="formula-block">$$\\frac{x - x_1}{x_2 - x_1} = \\frac{y - y_1}{y_2 - y_1} = \\frac{z - z_1}{z_2 - z_1}$$</div>
+    `,
+    generators: [genLine, genLine, genLine, genLine, genLine]
+  },
+  {
+    id: "dist-point-line",
+    title: "📍 Расстояние от точки до прямой",
+    theory: `
+      <p>Расстояние от точки $M_1$ до прямой через $M_0$ с направляющим вектором $\\vec{s}$:</p>
+      <div class="formula-block">$$d = \\frac{|\\overrightarrow{M_0M_1} \\times \\vec{s}|}{|\\vec{s}|}$$</div>
+    `,
+    generators: [genDistPointLine, genDistPointLine, genDistPointLine, genDistPointLine, genDistPointLine]
+  },
+  {
+    id: "plane-3points",
+    title: "🧊 Уравнение плоскости по трём точкам",
+    theory: `
+      <p>Уравнение плоскости через три точки:</p>
+      <div class="formula-block">$$\\begin{vmatrix} x - x_1 & y - y_1 & z - z_1 \\\\ x_2 - x_1 & y_2 - y_1 & z_2 - z_1 \\\\ x_3 - x_1 & y_3 - y_1 & z_3 - z_1 \\end{vmatrix} = 0$$</div>
+    `,
+    generators: [genPlane, genPlane, genPlane, genPlane, genPlane]
+  },
+  {
+    id: "dist-point-plane",
+    title: "📐 Расстояние от точки до плоскости",
+    theory: `
+      <p>Формула расстояния от точки $M_0(x_0;y_0;z_0)$ до плоскости $Ax + By + Cz + D = 0$:</p>
+      <div class="formula-block">$$\\rho = \\frac{|Ax_0 + By_0 + Cz_0 + D|}{\\sqrt{A^2 + B^2 + C^2}}$$</div>
+    `,
+    generators: [genDistPointPlane, genDistPointPlane, genDistPointPlane, genDistPointPlane, genDistPointPlane]
+  },
+  {
+    id: "angle-lines",
+    title: "✖️ Угол между скрещивающимися прямыми",
+    theory: `
+      <p>Угол между прямыми с направляющими векторами $\\vec{m_1}$, $\\vec{m_2}$:</p>
+      <div class="formula-block">$$\\cos\\alpha = \\frac{|\\vec{m_1} \\cdot \\vec{m_2}|}{|\\vec{m_1}| \\cdot |\\vec{m_2}|}$$</div>
+    `,
+    generators: [genAngleLines, genAngleLines, genAngleLines, genAngleLines, genAngleLines]
+  },
+  {
+    id: "angle-line-plane",
+    title: "📐 Угол между прямой и плоскостью",
+    theory: `
+      <p>Синус угла между прямой ($\\vec{c}$) и плоскостью ($\\vec{n}$):</p>
+      <div class="formula-block">$$\\sin\\alpha = \\frac{|\\vec{c} \\cdot \\vec{n}|}{|\\vec{c}| \\cdot |\\vec{n}|}$$</div>
+    `,
+    generators: [genAngleLinePlane, genAngleLinePlane, genAngleLinePlane, genAngleLinePlane, genAngleLinePlane]
+  },
+  {
+    id: "angle-planes",
+    title: "🧊 Угол между плоскостями",
+    theory: `
+      <p>Косинус угла между плоскостями с нормалями $\\vec{n_1}$, $\\vec{n_2}$:</p>
+      <div class="formula-block">$$\\cos\\alpha = \\frac{|\\vec{n_1} \\cdot \\vec{n_2}|}{|\\vec{n_1}| \\cdot |\\vec{n_2}|}$$</div>
+    `,
+    generators: [genAnglePlanes, genAnglePlanes, genAnglePlanes, genAnglePlanes, genAnglePlanes]
+  },
+  {
+    id: "exam-tasks",
+    title: "✏️ Экзаменационные задачи №14",
+    theory: `
+      <p>Задачи с доказательством (пункт а) и вычислением (пункт б). Числа фиксированы, так как привязаны к чертежу.</p>
+    `,
+    tasks: [
+      {
+        title: "✏️ Задача 1. Правильная треугольная пирамида",
+        body: "Основание правильной треугольной пирамиды $МАВС$ — треугольник $АВС$ со стороной 6. Ребро $МА$ перпендикулярно грани $МВС$. Через вершину $М$ и середины рёбер $АС$ и $ВС$ проведена плоскость $\\alpha$.<br>а) Докажите, что сечение пирамиды плоскостью $\\alpha$ — равносторонний треугольник.<br>б) Найдите расстояние от вершины $С$ до плоскости $\\alpha$.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Tetrahedron.svg/400px-Tetrahedron.svg.png",
+        solution: `
+          <div class="step"><b>а)</b> Система: $A(0;0;0)$, $Ox$ вдоль $AB$. $B(6;0;0)$, $C(3;3\\sqrt{3};0)$, $M(3;\\sqrt{3};\\sqrt{6})$.</div>
+          <div class="step">$K(1{,}5;1{,}5\\sqrt{3};0)$, $L(3;0;0)$. $|ML|=|MK|=|KL|=3$.</div>
+          <div class="step"><b>б)</b> $\\vec{n}\\{0;2\\sqrt{6};\\sqrt{3}\\}$, $\\rho = \\sqrt{6}$.</div>
+          <div class="answer">Ответ: б) $\\sqrt{6}$.</div>
+        `
+      },
+      {
+        title: "✏️ Задача 2. Правильная четырёхугольная призма",
+        body: "Дана правильная четырёхугольная призма $ABCDA_1B_1C_1D_1$.<br>а) Докажите, что плоскости $AD_1C$ и $B_1D_1$ перпендикулярны.<br>б) Найдите расстояние от точки $B_1$ до плоскости $AD_1C$, если $AB = 5$ и $AA_1 = 6$.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Right_prism.svg/400px-Right_prism.svg.png",
+        solution: `
+          <div class="step"><b>а)</b> $\\vec{n_1}\\{-ba;-ba;a^2\\}$, $\\vec{n_2}\\{-ab;ab;0\\}$. Скалярное произведение $=0$.</div>
+          <div class="step"><b>б)</b> $AD_1
