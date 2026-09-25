@@ -366,7 +366,7 @@ function genAngleLines() {
   const l1 = m1*m1 + n1*n1 + p1*p1;
   const l2 = m2*m2 + n2*n2 + p2*p2;
   return {
-    title: "✖️ Угол между прямыми",
+    title: " Угол между прямыми",
     body: `Найдите угол между прямыми $\\dfrac{x}{${m1}} = \\dfrac{y}{${n1}} = \\dfrac{z}{${p1}}$ и $\\dfrac{x}{${m2}} = \\dfrac{y}{${n2}} = \\dfrac{z}{${p2}}$.`,
     solution: `
       <div class="step">Направляющие векторы: $\\vec{m_1}\\{${m1};${n1};${p1}\\}$, $\\vec{m_2}\\{${m2};${n2};${p2}\\}$.</div>
@@ -392,7 +392,7 @@ function genAngleLinePlane() {
   const t = (coef, v) => coef === 0 ? "" : ` ${coef > 0 ? "+" : "−"} ${Math.abs(coef) === 1 ? "" : Math.abs(coef)}${v}`;
   const eq = `${A}x${t(B,"y")}${t(C,"z")} = 0`;
   return {
-    title: "📐 Угол между прямой и плоскостью",
+    title: " Угол между прямой и плоскостью",
     body: `Найдите угол между прямой $\\dfrac{x}{${m}} = \\dfrac{y}{${n}} = \\dfrac{z}{${p}}$ и плоскостью $${eq}$.`,
     solution: `
       <div class="step">Из уравнения прямой выписываем направляющий вектор $\\vec{c}\\{${m};${n};${p}\\}$.</div>
@@ -420,7 +420,7 @@ function genAnglePlanes() {
   const eq1 = `${A1}x${t(B1,"y")}${t(C1,"z")} = 0`;
   const eq2 = `${A2}x${t(B2,"y")}${t(C2,"z")} = 0`;
   return {
-    title: "🧊 Угол между плоскостями",
+    title: " Угол между плоскостями",
     body: `Найдите угол между плоскостями $${eq1}$ и $${eq2}$.`,
     solution: `
       <div class="step">Векторы нормали: $\\vec{n_1}\\{${A1};${B1};${C1}\\}$, $\\vec{n_2}\\{${A2};${B2};${C2}\\}$.</div>
@@ -455,7 +455,7 @@ const sections = [
   },
   {
     id: "line",
-    title: "📏 Уравнение прямой по двум точкам",
+    title: " Уравнение прямой по двум точкам",
     theory: `
       <p>Каноническое уравнение прямой через точки $M_1(x_1;y_1;z_1)$ и $M_2(x_2;y_2;z_2)$:</p>
       <div class="formula-block">$$\\frac{x - x_1}{x_2 - x_1} = \\frac{y - y_1}{y_2 - y_1} = \\frac{z - z_1}{z_2 - z_1}$$</div>
